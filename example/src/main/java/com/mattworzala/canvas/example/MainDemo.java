@@ -1,6 +1,7 @@
 package com.mattworzala.canvas.example;
 
-import com.mattworzala.canvas.*;
+import com.mattworzala.canvas.Canvas;
+import com.mattworzala.canvas.CanvasProvider;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Player;
@@ -12,10 +13,8 @@ import net.minestom.server.instance.batch.ChunkBatch;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.world.biomes.Biome;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainDemo {
@@ -45,51 +44,21 @@ public class MainDemo {
             Canvas canvas = CanvasProvider.canvas(event.getPlayer());
 
             switch (event.getMessage().toLowerCase()) {
-                case "wiki:first_fragment":
-                    canvas.render(WikiFragments::FirstFragment);
-                    break;
-                case "wiki:first_listener":
-                    canvas.render(WikiFragments::FirstListener);
-                    break;
-                case "wiki:composition":
-                    canvas.render(WikiFragments::Composition);
-                    break;
-                case "wiki:titled_fragment":
-                    canvas.render(WikiFragments::TitledFragment);
-                    break;
-                case "wiki:composition_with_data":
-                    canvas.render(WikiFragments::CompositionWithData);
-                    break;
-                case "wiki:composition_with_state":
-                    canvas.render(WikiFragments::CompositionWithState);
-                    break;
-                case "basic":
-                    canvas.render(BasicTest::BasicItems);
-                    break;
-                case "flash":
-                    canvas.render(FlashingTest::FlashingInv);
-                    break;
-                case "recipe_mask":
-                    canvas.render(RecipeMaskTest::RecipeMaskTest);
-                    break;
-                case "batch":
-                    canvas.render(BasicTest::BatchTest);
-                    break;
-                case "effect":
-                    canvas.render(BasicTest::EffectExample);
-                    break;
-                case "v2:basic":
-                    canvas.render(DataReworkTest::MySmartFragment);
-                    break;
-                case "v2:composition":
-                    canvas.render(DataReworkTest::SmartComposition);
-                    break;
-                case "page":
-                    canvas.render(Pagination::PagedMenu);
-                    break;
-
-                default:
-                    event.getPlayer().sendMessage("No inventory named '" + event.getMessage() + "'!");
+                case "wiki:first_fragment" -> canvas.render(WikiFragments::FirstFragment);
+                case "wiki:first_listener" -> canvas.render(WikiFragments::FirstListener);
+                case "wiki:composition" -> canvas.render(WikiFragments::Composition);
+                case "wiki:titled_fragment" -> canvas.render(WikiFragments::TitledFragment);
+                case "wiki:composition_with_data" -> canvas.render(WikiFragments::CompositionWithData);
+                case "wiki:composition_with_state" -> canvas.render(WikiFragments::CompositionWithState);
+                case "basic" -> canvas.render(BasicTest::BasicItems);
+                case "flash" -> canvas.render(FlashingTest::FlashingInv);
+                case "recipe_mask" -> canvas.render(RecipeMaskTest::RecipeMaskTest);
+                case "batch" -> canvas.render(BasicTest::BatchTest);
+                case "effect" -> canvas.render(BasicTest::EffectExample);
+                case "v2:basic" -> canvas.render(DataReworkTest::MySmartFragment);
+                case "v2:composition" -> canvas.render(DataReworkTest::SmartComposition);
+                case "page" -> canvas.render(Pagination::PagedMenu);
+                default -> event.getPlayer().sendMessage("No inventory named '" + event.getMessage() + "'!");
             }
         });
 
@@ -108,11 +77,6 @@ public class MainDemo {
                         batch.setBlock(x, y, z, Block.STONE);
                     }
                 }
-        }
-
-        @Override
-        public void fillBiomes(@NotNull Biome[] biomes, int chunkX, int chunkZ) {
-            Arrays.fill(biomes, Biome.PLAINS);
         }
 
         @Override
