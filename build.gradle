@@ -37,18 +37,6 @@ allprojects {
     }
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl = uri("https://s01.oss.sonatype.org/service/local/")
-            snapshotRepositoryUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-
-            username = System.getenv("sonatypeUsername") ?: hasProperty("sonatypeUsername") ? sonatypeUsername : ''
-            password = System.getenv("sonatypePassword") ?: hasProperty("sonatypePassword") ? sonatypePassword : ''
-        }
-    }
-}
-
 repositories {
 }
 
@@ -68,48 +56,10 @@ task sourcesJar(type: Jar) {
 artifacts {
     archives sourcesJar, javadocJar
 }
-
 publishing {
     publications {
-        release(MavenPublication) {
-            from project.components.java
-            artifact javadocJar
-            artifact sourcesJar
-
-            pom {
-                name = 'canvas'
-                description = 'An inventory framework for the Minestom server software'
-                url = 'https://github.com/mworzala/canvas'
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://github.com/mworzala/canvas/blob/master/LICENSE'
-                    }
-                }
-
-                scm {
-                    connection = 'scm:git:github.com/mworzala/canvas.git'
-                    developerConnection = 'scm:git:ssh://github.com/mworzala/canvas.git'
-                    url = 'https://github.com/mworzala/canvas/tree/main'
-                }
-
-                developers {
-                    developer {
-                        id = 'mworzala'
-                        name = 'Matt Worzala'
-                        email = 'admin@mattworzala.com'
-                    }
-                }
-            }
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
-}
-
-signing {
-    if (System.env['CI'] != null) {
-        def signingKey = System.env['SIGNING_KEY']
-        def signingPassword = System.env['SIGNING_PASSWORD']
-        useInMemoryPgpKeys(signingKey, signingPassword)
-    }
-    sign publishing.publications
 }
